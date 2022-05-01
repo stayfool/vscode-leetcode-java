@@ -1,6 +1,44 @@
 # LeetCode
 
-> Solve LeetCode problems in VS Code
+> Solve LeetCode problems in VS Code with java
+
+> 由于以下问题，原 vscode-leetcode 插件对 Java 本地调试不友好：
+
+1. leetcode 生成的代码模板类名都是 Solution，编译会出现类名冲突
+2. 没有 main 入口
+3. 部分问题还需要其他类定义（eg:ListNode），本地无法通过编译
+
+> 所以分叉了 vscode-leetcode 插件来定制化：
+
+1. 修改 java 解题文件夹为`${snake_case_name}_${id}`, 并以此作为 java 的`package`,用`package`隔离来解决类同名冲突问题。
+
+2. 修改 java 解题文件名为`${PascalCaseName}${id}.${ext}`, 并生成名为`${PascalCaseName}${id}`的`public class`, 其中包含 Java 启动入口`main`方法。
+
+3. 如果有额外的类定义，则冲注释中解析出类定义，作为非公开类，解决本地类确实问题。
+
+```java
+// @debug code=start
+package merge_two_sorted_lists_21;
+
+public class MergeTwoSortedLists21 {
+    public static void main(String[] args) {
+        // TODO generate params by yourself
+        ListNode list1;
+        ListNode list2;
+
+        new Solution().mergeTwoLists(list1, list2);
+    }
+}
+
+class ListNode {
+     int val;
+     ListNode next;
+     ListNode() {}
+     ListNode(int val) { this.val = val; }
+     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+// @debug code=end
+```
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/resources/LeetCode.png" alt="">
@@ -23,6 +61,7 @@
 - English Document | [中文文档](https://github.com/LeetCode-OpenSource/vscode-leetcode/blob/master/docs/README_zh-CN.md)
 
 ## ❗️ Attention ❗️- Workaround to login to LeetCode endpoint
+
 > Note: If you are using `leetcode-cn.com`, you can just ignore this section.
 
 Recently we observed that [the extension cannot login to leetcode.com endpoint anymore](https://github.com/LeetCode-OpenSource/vscode-leetcode/issues/478). The root cause of this issue is that leetcode.com changed its login mechanism and so far there is no ideal way to fix that issue.
@@ -32,9 +71,10 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 > Note: If you want to use third-party login(**Recommended**), please make sure your account has been connected to the third-party. If you want to use `Cookie` login, click [here](https://github.com/LeetCode-OpenSource/vscode-leetcode/issues/478#issuecomment-564757098) to see the steps.
 
 ## Requirements
+
 - [VS Code 1.30.1+](https://code.visualstudio.com/)
 - [Node.js 10+](https://nodejs.org)
-    > NOTE: Please make sure that `Node` is in your `PATH` environment variable. You can also use the setting `leetcode.nodePath` to specify the location of your `Node.js` executable.
+  > NOTE: Please make sure that `Node` is in your `PATH` environment variable. You can also use the setting `leetcode.nodePath` to specify the location of your `Node.js` executable.
 
 ## Quick Start
 
@@ -43,6 +83,7 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 ## Features
 
 ### Sign In/Out
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/docs/imgs/sign_in.png" alt="Sign in" />
 </p>
@@ -52,9 +93,11 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 - You can also use the following command to sign in/out:
   - **LeetCode: Sign in**
   - **LeetCode: Sign out**
+
 ---
 
 ### Switch Endpoint
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/docs/imgs/endpoint.png" alt="Switch Endpoint" />
 </p>
@@ -62,6 +105,7 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 - By clicking the button ![btn_endpoint](https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/docs/imgs/btn_endpoint.png) at the **explorer's navigation bar**, you can switch between different endpoints.
 
 - The supported endpoints are:
+
   - **leetcode.com**
   - **leetcode-cn.com**
 
@@ -70,6 +114,7 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 ---
 
 ### Pick a Problem
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/docs/imgs/pick_problem.png" alt="Pick a Problem" />
 </p>
@@ -86,11 +131,13 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 ---
 
 ### Editor Shortcuts
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/docs/imgs/shortcuts.png" alt="Editor Shortcuts" />
 </p>
 
 - The extension supports 5 editor shortcuts (aka Code Lens):
+
   - `Submit`: Submit your answer to LeetCode.
   - `Test`: Test your answer with customized test cases.
   - `Star/Unstar`: Star or unstar the current problem.
@@ -102,6 +149,7 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 ---
 
 ### Search problems by Keywords
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/docs/imgs/search.png" alt="Search problems by Keywords" />
 </p>
@@ -111,12 +159,12 @@ Thanks for [@yihong0618](https://github.com/yihong0618) provided a workaround wh
 ---
 
 ### Manage Session
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/docs/imgs/session.png" alt="Manage Session" />
 </p>
 
 - To manage your LeetCode sessions, just clicking the `LeetCode: ***` at the bottom of the status bar. You can **switch** between sessions or **create**, **delete** a session.
-
 
 ## Settings
 
