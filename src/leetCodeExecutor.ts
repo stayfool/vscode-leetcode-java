@@ -13,6 +13,7 @@ import { executeCommand, executeCommandWithProgress } from "./utils/cpUtils";
 import { DialogOptions, openUrl } from "./utils/uiUtils";
 import * as wsl from "./utils/wslUtils";
 import { toWslPath, useWsl } from "./utils/wslUtils";
+import { fillDebugContent } from "./utils/debugUtils";
 
 class LeetCodeExecutor implements Disposable {
     private leetCodeRootPath: string;
@@ -111,7 +112,7 @@ class LeetCodeExecutor implements Disposable {
         if (!await fse.pathExists(filePath)) {
             await fse.createFile(filePath);
             const codeTemplate: string = await this.executeCommandWithProgressEx("Fetching problem data...", this.nodeExecutable, cmd);
-            await fse.writeFile(filePath, codeTemplate);
+            await fse.writeFile(filePath, fillDebugContent(codeTemplate, language, filePath));
         }
     }
 
