@@ -48,7 +48,7 @@ function processJavaComment(codeContent: string, debugCode: Array<string>) {
         return;
     }
 
-    const classDefinneMatch = commentMatch[0].match(/class\s+\w+\s*{.*}/s);
+    const classDefinneMatch = commentMatch[0].match(/class\s+.+?\s*{.*}/s);
     if (!classDefinneMatch || classDefinneMatch.length == 0) {
         return;
     }
@@ -77,7 +77,7 @@ function processJavaDebugCode(codeContent: string, debugCode: Array<string>, fil
         codeContent = codeContent.substring(commentMatch[0].length + 1);
     }
 
-    let method = codeContent.match(/.*public\s+\w+\s+(\w+)\((.*)\)/);
+    let method = codeContent.match(/.*public\s+.+?\s+(\w+)\((.*)\)/);
     method = method ? method : []
     const methodName = method[1]
 
